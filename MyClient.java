@@ -119,5 +119,34 @@ public static synchronized String readMessage(Socket s) {
         currentMessage = readMessage(s);
         System.out.println("RCVD: " + currentMessage);
     }
+    //check loops for errors
+    //find the biggest server
+    public static String[] findLargestServer(String currentMessage){
+        int mostCores = 0;
+        String[] currentServer = {""};
+        
+        //All the servers in the string split into an array
+        String[] servers = currentMessage.split("\n");
+        
+        //searches for server with the most cores
+        for(int i = 0; i < servers.length; i++) {
+            currentServer = servers[i].split(" ");
+            int cores = Integer.valueOf(currentServer[4]);
+
+            if(cores > mostCores){
+                mostCores = cores;
+            }
+
+        }
+        //finds and returns the server with the most cores
+        for (int i = 0; i < servers.length; i++) {
+            currentServer = servers[i].split(" ");
+            int cores = Integer.valueOf(currentServer[4]);
+            if(cores == mostCores){
+                return currentServer;
+            }
+        }
+        return currentServer;
+    }
 
 }
