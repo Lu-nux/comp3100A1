@@ -42,24 +42,24 @@ public class MyClient {
                         largestFound = true; 
                     }
 
-                    //reads from the server TODo
-                    //currentMessage = readMessage(s);
+                    //reads from the server 
+                    currentMessage = readMessage(s);
 
                     //Schedule the current job to biggest server
-                    //sendMessage(s, "SCHD " + JOBNSplit[2] + " " + largetServer[0] + " " + largestServer[1] + "\n");)
+                    //TODO
 
 
                     //reads next job
-                    // to do currentMessage = readMessage(s);
+                     currentMessage = readMessage(s);
 
                     System.out.println("SCHD: " + currentMessage);
                 }
                 else if (currentMessage.contains("DATA")){
-                    //sendMessage(s, "OK\n");
+                    //TODOsendMessage(s, "OK\n");
                 }
             }
             //sends quit to the server to gracefully end connection
-            //sendMessage(s, "QUIT\n");
+            //TO DO sendMessage(s, "QUIT\n");
             s.close();
             }catch(Exception e){System.out.println(e); 
             }
@@ -85,11 +85,20 @@ public static synchronized String readMessage(Socket s) {
 
         } 
     }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
+        catch(IOException e) {    e.printStackTrace();  }
         //return the message from the server
         return currentMessage;
+    }
+
+    //send a message to the server
+    public static synchronized void sendMessage(Socket s, String currentMessage){
+        try{
+            //converts string to a byte array and sends the array to the server
+            DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+            byte[] byteArray = currentMessage.getBytes();
+            dout.write(byteArray);
+            dout.flush();
+        }catch (IOException e) { e.printStackTrace(); }
     }
     
 
