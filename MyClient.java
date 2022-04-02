@@ -13,28 +13,28 @@ public class MyClient {
             boolean largestFound = false;
             String currentMessage = "";
 
-         //   handshake(s);
-            // todo
+            handshake(s);
+        
 
             //While there are jobs to do
 
             while (!currentMessage.contains("NONE")){
                 //client tell the server that it is ready and reads
 
-                //todo sendMessage(s, "REDY")
-             // TODO  currentMessage = readMessage(s);
+                sendMessage(s, "REDY");
+                currentMessage = readMessage(s);
                 if (currentMessage.contains("JOBN")) {
                     String[] JOBNSplit = currentMessage.split(" ");
 
                     //asks for servers available to run a job
                     //todo
                     //Reads the message saying what data is being sent and responds
-                    //todo currentMessage = <readmessage(s)
-                    //respond sendmessage(s, "OK\n");
+                    currentMessage = readMessage(s);
+                    sendMessage(s, "OK\n");
 
                     //reads the servers data and responds
-                    //todo currentMessage = readmessage(s);
-                    //todo sendmessage(s,"OK\n");
+                    currentMessage = readMessage(s);
+                    sendMessage(s,"OK\n");
 
                     //checksif the biggest server is found
                     if(largestFound == false) {
@@ -55,7 +55,7 @@ public class MyClient {
                     System.out.println("SCHD: " + currentMessage);
                 }
                 else if (currentMessage.contains("DATA")){
-                    //TODOsendMessage(s, "OK\n");
+                    sendMessage(s, "OK\n");
                 }
             }
             //sends quit to the server to gracefully end connection
@@ -101,5 +101,23 @@ public static synchronized String readMessage(Socket s) {
         }catch (IOException e) { e.printStackTrace(); }
     }
     
+    public static void handshake(Socket s) {
+        String currentMessage = "";
+
+        //initiate handshake
+        sendMessage(s, "HELO\n");
+
+        //check for response from server
+        currentMessage = readMessage(s);
+        System.out.println("RCVD: " + currentMessage);
+
+        //Authenticate with a username ""lu""
+        //System.out.println("the user name is: " + System.getProperty("user.name"));
+        sendMessage(s, System.getProperty("user.name") + "\n");
+
+        //check if server has approved clients authentication 
+        currentMessage = readMessage(s);
+        System.out.println("RCVD: " + currentMessage);
+    }
 
 }
