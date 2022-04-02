@@ -27,7 +27,7 @@ public class MyClient {
                     String[] JOBNSplit = currentMessage.split(" ");
 
                     //asks for servers available to run a job
-                    //todo
+                    sendMessage(s, "GETS Avail " + JOBNSplit[4] + " " + JOBNSplit[5] + " " + JOBNSplit[6] + "\n");
                     //Reads the message saying what data is being sent and responds
                     currentMessage = readMessage(s);
                     sendMessage(s, "OK\n");
@@ -38,7 +38,7 @@ public class MyClient {
 
                     //checksif the biggest server is found
                     if(largestFound == false) {
-                        //largestFound = TODO findLargestServer(current message);
+                        bigServer = findLargestServer(currentMessage);
                         largestFound = true; 
                     }
 
@@ -46,11 +46,11 @@ public class MyClient {
                     currentMessage = readMessage(s);
 
                     //Schedule the current job to biggest server
-                    //TODO
+                    sendMessage(s, "SCHD " + JOBNSplit[2] + " " + bigServer[0] + " " + bigServer[1] + "\n");
 
 
                     //reads next job
-                     currentMessage = readMessage(s);
+                    currentMessage = readMessage(s);
 
                     System.out.println("SCHD: " + currentMessage);
                 }
@@ -59,7 +59,7 @@ public class MyClient {
                 }
             }
             //sends quit to the server to gracefully end connection
-            //TO DO sendMessage(s, "QUIT\n");
+            sendMessage(s, "QUIT\n");
             s.close();
             }catch(Exception e){System.out.println(e); 
             }
@@ -69,6 +69,7 @@ public class MyClient {
 //to read a message from the server
 public static synchronized String readMessage(Socket s) {
     String currentMessage = "FAIL";
+
     try {
         DataInputStream dis = new DataInputStream(s.getInputStream());
         byte[] byteArray = new byte[dis.available()];
@@ -111,8 +112,7 @@ public static synchronized String readMessage(Socket s) {
         currentMessage = readMessage(s);
         System.out.println("RCVD: " + currentMessage);
 
-        //Authenticate with a username ""lu""
-        //System.out.println("the user name is: " + System.getProperty("user.name"));
+        //Authenticate with a username   ""lu""
         sendMessage(s, System.getProperty("user.name") + "\n");
 
         //check if server has approved clients authentication 
