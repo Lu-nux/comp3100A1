@@ -17,8 +17,8 @@ public class MyClient {
         
 
             //While there are jobs to do
-            while (!currentMessage.equals(".")){
-        //    while (!currentMessage.contains("NONE")){
+          //  while (!currentMessage.equals(".")){
+            while (!currentMessage.contains("NONE")){
                 //client tell the server that it is ready and reads
 
                 sendMessage(s, "REDY\n");
@@ -107,13 +107,12 @@ public static synchronized String readMessage(Socket s) {
 
         //initiate handshake
         sendMessage(s, "HELO\n");
-
         //check for response from server
         currentMessage = readMessage(s);
         System.out.println("RCVD: " + currentMessage);
 
-        //Authenticate with a username
-        sendMessage(s, System.getProperty("user.name") + "\n");
+        //Authenticate with a username 
+        sendMessage(s, "AUTH" + System.getProperty("user.name") + "\n");
 
         //check if server has approved clients authentication 
         currentMessage = readMessage(s);
